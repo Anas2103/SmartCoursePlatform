@@ -91,7 +91,20 @@ export default function CoursePlayer() {
   const isLessonCompleted = (lessonId) => enrollment?.progress?.some(p => p.lesson_id === lessonId && p.completed);
 
   if (isLoading) return <div className="flex justify-center py-20"><Spinner size="lg" /></div>;
-  if (!enrollment) return null;
+  if (!enrollment) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-gray-50 dark:bg-gray-950 px-4">
+        <div className="card p-10 text-center max-w-md">
+          <h1 className="text-xl font-bold text-gray-900 dark:text-gray-100 mb-2">You're not enrolled in this course</h1>
+          <p className="text-gray-500 mb-6">Enroll from the course page to start learning, or pick one of your existing courses.</p>
+          <div className="flex gap-3 justify-center">
+            <Link to="/courses" className="btn btn-secondary">Browse courses</Link>
+            <Link to="/student/courses" className="btn btn-primary">My courses</Link>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   const course = enrollment.course;
   const totalLessons = course?.sections?.reduce((acc, s) => acc + (s.lessons?.length || 0), 0) || 0;
